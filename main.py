@@ -241,6 +241,148 @@ class App(customtkinter.CTk, Contact):
 
         self.window_edit_contact.mainloop()
 
+    def delete_note(self, id):
+        DeleteNote(id)
+        self.window_view_contact.withdraw()
+        notification.notify(
+            title="Success",
+            message="Nota eliminada correctamente",
+            app_icon="img/LogBlanko.ico",
+            timeout=5,
+        )
+
+    def edit_note_sql(self, id):
+        title = self.entry_title_note_edit.get()
+        content = self.entry_note_edit_note.get()
+
+        if title == "" or content == "":
+            notification.notify(
+                title="Error",
+                message="No puedes dejar campos vacios",
+                app_icon="img/LogBlanko.ico",
+                timeout=5,
+            )
+        else:
+            UpdateNoteById(id, title, content)
+            self.window_edit_note.withdraw()
+            notification.notify(
+                title="Success",
+                message="Nota editada correctamente",
+                app_icon="img/LogBlanko.ico",
+                timeout=5,
+            )
+
+    def edit_note(self, id):
+        try:
+            self.window_view_contact.withdraw()
+            self.window_edit_contact.withdraw()
+            self.window_delete_contact.withdraw()
+            self.window_add_contact.withdraw()
+            self.window_add_note.withdraw()
+        except:
+            pass
+
+        self.window_edit_note = customtkinter.CTk()
+        self.window_edit_note.title("Edit Note - by AleDev")
+        self.window_edit_note.geometry(f"{350}x{370}")
+        self.window_edit_note.resizable(False, False)
+
+        self.frame_edit_note = customtkinter.CTkFrame(self.window_edit_note, width=300, height=600)
+        self.frame_edit_note.pack(pady=10, padx=10, fill="x")
+
+        self.label_title_edit_note = customtkinter.CTkLabel(self.frame_edit_note, text="Edit Note", font=("Arial", 20, "bold"))
+        self.label_title_edit_note.pack(pady=10, padx=10, fill="x")
+
+        self.label_title_note_edit = customtkinter.CTkLabel(self.frame_edit_note, text="Title", font=("Arial", 20, "bold"))
+        self.label_title_note_edit.pack(pady=10, padx=10, fill="x")
+
+        self.entry_title_note_edit = customtkinter.CTkEntry(self.frame_edit_note, width=30)
+        self.entry_title_note_edit.pack(pady=10, padx=10, fill="x")
+
+        self.label_content_note_edit = customtkinter.CTkLabel(self.frame_edit_note, text="Contente",font=("Arial", 20, "bold"))
+        self.label_content_note_edit.pack(pady=10, padx=10, fill="x")
+
+        self.entry_note_edit_note = customtkinter.CTkEntry(self.frame_edit_note, width=30)
+        self.entry_note_edit_note.pack(pady=10, padx=10, fill="x")
+
+        self.button_edit_note = customtkinter.CTkButton(self.frame_edit_note, text="Save", width=10, command=lambda:self.edit_note_sql(id))
+        self.button_edit_note.pack(pady=10, padx=10, fill="x")
+
+        self.button_cancel_edit_note = customtkinter.CTkButton(self.frame_edit_note, text="Cancel", width=10, command=self.window_edit_note.withdraw)
+        self.button_cancel_edit_note.pack(pady=10, padx=10, fill="x")
+
+        info = GetNoteById(id)
+
+        self.entry_title_note_edit.delete(0, tkinter.END)
+        self.entry_note_edit_note.delete(0, tkinter.END)
+
+        self.entry_title_note_edit.insert(0, info[1])
+        self.entry_note_edit_note.insert(0, info[2])
+
+        self.window_edit_note.mainloop()
+
+    def add_note_SQL(self, id):
+        title = self.entry_title_note_add.get()
+        content = self.entry_note_add_note.get()
+
+        if title == "" or content == "":
+            notification.notify(
+                title="Error",
+                message="No puedes dejar campos vacios",
+                app_icon="img/LogBlanko.ico",
+                timeout=5,
+            )
+        else:
+            AddNote(current_user.id, id, title, content)
+            # cerramos la ventana
+            self.window_add_note.withdraw()
+            self.view_contact(id)
+            notification.notify(
+                title="Success",
+                message="Nota agregada correctamente",
+                app_icon="img/LogBlanko.ico",
+                timeout=5,
+            )
+
+    def add_note(self, id):
+        try:
+            self.window_view_contact.withdraw()
+            self.window_edit_contact.withdraw()
+            self.window_delete_contact.withdraw()
+            self.window_add_contact.withdraw()
+        except:
+            pass
+
+        self.window_add_note = customtkinter.CTk()
+        self.window_add_note.title("Add Note - by AleDev")
+        self.window_add_note.geometry(f"{350}x{370}")
+        self.window_add_note.resizable(False, False)
+
+        self.frame_add_note = customtkinter.CTkFrame(self.window_add_note, width=300, height=600)
+        self.frame_add_note.pack(pady=10, padx=10, fill="x")
+
+        self.label_title_add_note = customtkinter.CTkLabel(self.frame_add_note, text="Add Note", font=("Arial", 20, "bold"))
+        self.label_title_add_note.pack(pady=10, padx=10, fill="x")
+
+        self.label_title_note_add = customtkinter.CTkLabel(self.frame_add_note, text="Title", font=("Arial", 20, "bold"))
+        self.label_title_note_add.pack(pady=10, padx=10, fill="x")
+
+        self.entry_title_note_add = customtkinter.CTkEntry(self.frame_add_note, width=30)
+        self.entry_title_note_add.pack(pady=10, padx=10, fill="x")
+
+        self.label_content_note_add = customtkinter.CTkLabel(self.frame_add_note, text="Contente",font=("Arial", 20, "bold"))
+        self.label_content_note_add.pack(pady=10, padx=10, fill="x")
+
+        self.entry_note_add_note = customtkinter.CTkEntry(self.frame_add_note, width=30)
+        self.entry_note_add_note.pack(pady=10, padx=10, fill="x")
+
+        self.button_add_add_note = customtkinter.CTkButton(self.frame_add_note, text="Add", width=10, command=lambda:self.add_note_SQL(id))
+        self.button_add_add_note.pack(pady=10, padx=10, fill="x")
+
+        self.button_cancel_add_note = customtkinter.CTkButton(self.frame_add_note, text="Cancel", width=10, command=self.window_add_note.withdraw)
+        self.button_cancel_add_note.pack(pady=10, padx=10, fill="x")
+
+        self.window_add_note.mainloop()
 
     def view_contact(self, id):
         info = GetContact(id)
@@ -255,10 +397,18 @@ class App(customtkinter.CTk, Contact):
 
         self.window_view_contact = customtkinter.CTk()
         self.window_view_contact.title("View Contact - by AleDev")
-        self.window_view_contact.geometry(f"{350}x{400}")
+        self.window_view_contact.geometry(f"{350}x{530}")
         self.window_view_contact.resizable(False, False)
 
-        self.frame_view_contact = customtkinter.CTkFrame(self.window_view_contact, width=300, height=600)
+        self.tabview = customtkinter.CTkTabview(self.window_view_contact, width=250)
+        self.tabview.pack(pady=10, padx=10, fill="x")
+
+        self.tabview.add("Info")
+        self.tabview.add("Notes")
+        self.tabview.tab("Info")
+        self.tabview.tab("Notes")
+
+        self.frame_view_contact = customtkinter.CTkFrame(self.tabview.tab("Info"), width=300, height=600)
         self.frame_view_contact.pack(pady=10, padx=10, fill="x")
 
         self.label_title_view_contact = customtkinter.CTkLabel(self.frame_view_contact, text="View Contact", font=("Arial", 20, "bold"))
@@ -279,11 +429,42 @@ class App(customtkinter.CTk, Contact):
         self.button_edit_view_contact = customtkinter.CTkButton(self.frame_view_contact, text="Edit", width=10, command=lambda: self.edit_contact(info))
         self.button_edit_view_contact.pack(pady=10, padx=10, fill="x")
 
+        self.button_add_note_contact = customtkinter.CTkButton(self.frame_view_contact, text="Add note", width=10, command=lambda: self.add_note(info[0]))
+        self.button_add_note_contact.pack(pady=10, padx=10, fill="x")
+
         self.button_delete_view_contact = customtkinter.CTkButton(self.frame_view_contact, text="Delete", width=10, command=lambda: self.delete_contact(info[0]))
         self.button_delete_view_contact.pack(pady=10, padx=10, fill="x")
 
         self.button_cancel_view_contact = customtkinter.CTkButton(self.frame_view_contact, text="Cancel", width=10, command=self.window_view_contact.withdraw)
         self.button_cancel_view_contact.pack(pady=10, padx=10, fill="x")
+
+        self.frame_notes_view_contact = customtkinter.CTkFrame(self.tabview.tab("Notes"), width=300, height=600)
+        self.frame_notes_view_contact.pack(pady=10, padx=10, fill="x")
+
+        self.scrollable_list_notes = customtkinter.CTkScrollableFrame(self.frame_notes_view_contact, width=900, height=470)
+        self.scrollable_list_notes.pack(side="top", fill="both", expand=True)
+
+        self.scrollable_frame_list_notes = []
+
+        list = GetNotes(current_user.id, id)
+
+        for note in list:
+            self.frame_list_notes = customtkinter.CTkFrame(self.scrollable_list_notes, width=900, height=100, border_color="gray", border_width=1)
+            self.frame_list_notes.pack(side="top", fill="x", pady=5)
+
+            self.label_title_list_notes = customtkinter.CTkLabel(self.frame_list_notes, text="Title: " + note[1], font=("Arial", 12))
+            self.label_title_list_notes.place(x=10, y=10)
+
+            self.label_content_list_notes = customtkinter.CTkLabel(self.frame_list_notes, text="Content: " + note[2], font=("Arial", 12))
+            self.label_content_list_notes.place(x=10, y=40)
+
+            self.button_delete_list_notes = customtkinter.CTkButton(self.frame_list_notes, text="Delete", width=10, command=lambda id=note[0]: self.delete_note(id))
+            self.button_delete_list_notes.place(x=10, y=70)
+
+            self.button_edit_list_notes = customtkinter.CTkButton(self.frame_list_notes, text="Edit", width=10, command=lambda id=note[0]: self.edit_note(id))
+            self.button_edit_list_notes.place(x=65, y=70)
+
+            self.scrollable_frame_list_notes.append(self.frame_list_notes)
 
         self.window_view_contact.mainloop()
 

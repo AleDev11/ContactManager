@@ -136,3 +136,67 @@ def GetUsers():
     else:
         print("[MYSQL] Error connecting to database")
         return None
+
+def GetNotes(id_owner, id_contact):
+    if CheckDatabase():
+        cnx = mysql.connector.connect(user='root', password='', host='localhost', database='contact_manager')
+        cursor = cnx.cursor()
+        query = ("SELECT * FROM notes_contact WHERE id_owner = %s AND id_contact = %s")
+        cursor.execute(query, (id_owner, id_contact))
+        result = cursor.fetchall()
+        cursor.close()
+        cnx.close()
+        return result
+    else:
+        print("[MYSQL] Error connecting to database")
+        return None
+
+def AddNote(id_owner, id_contact, title, content):
+    if CheckDatabase():
+        cnx = mysql.connector.connect(user='root', password='', host='localhost', database='contact_manager')
+        cursor = cnx.cursor()
+        query = ("INSERT INTO notes_contact(id_owner, id_contact, title, content) VALUES(%s, %s, %s, %s)")
+        cursor.execute(query, (id_owner, id_contact, title, content))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+    else:
+        print("[MYSQL] Error connecting to database")
+
+def DeleteNote(id):
+    if CheckDatabase():
+        cnx = mysql.connector.connect(user='root', password='', host='localhost', database='contact_manager')
+        cursor = cnx.cursor()
+        query = ("DELETE FROM notes_contact WHERE id = %s")
+        cursor.execute(query, (id,))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+    else:
+        print("[MYSQL] Error connecting to database")
+
+def GetNoteById(id):
+    if CheckDatabase():
+        cnx = mysql.connector.connect(user='root', password='', host='localhost', database='contact_manager')
+        cursor = cnx.cursor()
+        query = ("SELECT * FROM notes_contact WHERE id = %s")
+        cursor.execute(query, (id,))
+        result = cursor.fetchone()
+        cursor.close()
+        cnx.close()
+        return result
+    else:
+        print("[MYSQL] Error connecting to database")
+        return None
+
+def UpdateNoteById(id, title, content):
+    if CheckDatabase():
+        cnx = mysql.connector.connect(user='root', password='', host='localhost', database='contact_manager')
+        cursor = cnx.cursor()
+        query = ("UPDATE notes_contact SET title = %s, content = %s WHERE id = %s")
+        cursor.execute(query, (title, content, id))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+    else:
+        print("[MYSQL] Error connecting to database")
