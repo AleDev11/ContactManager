@@ -729,7 +729,7 @@ class App(customtkinter.CTk, Contact):
         self.label_password_login = customtkinter.CTkLabel(self.window_login, text="Password", font=("Arial", 18))
         self.label_password_login.pack(pady=10, padx=10, fill="x")
 
-        self.textbox_password_login = customtkinter.CTkEntry(self.window_login, width=10, font=customtkinter.CTkFont(size=12, weight="bold"))
+        self.textbox_password_login = customtkinter.CTkEntry(self.window_login, width=10, font=customtkinter.CTkFont(size=12, weight="bold"), show="*")
         self.textbox_password_login.pack(pady=10, padx=10, fill="x")
 
         self.button_login_login = customtkinter.CTkButton(self.window_login, text="Login", command=self.login_user)
@@ -778,13 +778,13 @@ class App(customtkinter.CTk, Contact):
         self.label_password_register = customtkinter.CTkLabel(self.window_register, text="Password", font=("Arial", 18))
         self.label_password_register.pack(pady=10, padx=10, fill="x")
 
-        self.textbox_password_register = customtkinter.CTkEntry(self.window_register, width=10, font=customtkinter.CTkFont(size=12, weight="bold"))
+        self.textbox_password_register = customtkinter.CTkEntry(self.window_register, width=10, font=customtkinter.CTkFont(size=12, weight="bold"), show="*")
         self.textbox_password_register.pack(pady=10, padx=10, fill="x")
 
         self.label_password_confirm_register = customtkinter.CTkLabel(self.window_register, text="Confirm Password", font=("Arial", 18))
         self.label_password_confirm_register.pack(pady=10, padx=10, fill="x")
 
-        self.textbox_password_confirm_register = customtkinter.CTkEntry(self.window_register, width=10, font=customtkinter.CTkFont(size=12, weight="bold"))
+        self.textbox_password_confirm_register = customtkinter.CTkEntry(self.window_register, width=10, font=customtkinter.CTkFont(size=12, weight="bold"), show="*")
         self.textbox_password_confirm_register.pack(pady=10, padx=10, fill="x")
 
         self.button_register_register = customtkinter.CTkButton(self.window_register, text="Register", command=self.register_user)
